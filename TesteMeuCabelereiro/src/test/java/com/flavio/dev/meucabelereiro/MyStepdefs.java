@@ -12,6 +12,7 @@ public class MyStepdefs {
     private String login;
     private String senha;
     private String confirmaSenha;
+    private String novaSenha;
 
     private ValidatableResponse resposta;
     private final String chaveTeste = String.valueOf(System.currentTimeMillis());
@@ -21,6 +22,7 @@ public class MyStepdefs {
         this.login = null;
         this.senha = null;
         this.confirmaSenha = null;
+        this.novaSenha = null;
         this.resposta = null;
     }
 
@@ -51,5 +53,19 @@ public class MyStepdefs {
     @Entao("devo receber o status {int}")
     public void devoReceberOStatusStatusDeResposta(int status) {
         this.resposta.statusCode(status);
+    }
+
+    @E("preencha o campo nova senha com o valor {string}")
+    public void preenchaOCampoNovaSenhaComOValor(String novaSenha) {
+        this.novaSenha = novaSenha;
+    }
+
+    @E("submeta os dados para atualizar o usuario")
+    public void submetaOsDadosParaAtualizarOUsuario() {
+        this.resposta = RestAssured.given().
+                    params("login", this.login, "senha", this.senha, "confirma-senha",this.confirmaSenha).
+                when().
+                    put(Funcionalidade.USUARIO.endereco()).
+                then();
     }
 }
