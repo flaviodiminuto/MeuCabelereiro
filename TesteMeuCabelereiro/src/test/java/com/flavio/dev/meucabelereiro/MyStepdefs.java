@@ -41,8 +41,8 @@ public class MyStepdefs {
         this.confirmaSenha = confirmaSenha;
     }
 
-    @E("enviar a requisicao para cadastrar novo usuário")
-    public void enviarARequisicaoParaCadastrarNovoUsuário() {
+    @E("enviar a requisicao para cadastrar novo usuario")
+    public void enviarARequisicaoParaCadastrarNovoUsuario() {
         this.resposta = RestAssured.given().
                     params("login", this.login, "senha", this.senha, "confirma-senha",this.confirmaSenha).
                 when().

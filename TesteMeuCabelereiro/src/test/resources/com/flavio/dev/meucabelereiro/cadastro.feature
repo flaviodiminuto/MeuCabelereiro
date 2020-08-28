@@ -9,7 +9,7 @@
       Dado que eu preencha o campo login com o valor "<valor-login>"
       E preencha o campo senha com o valor "<valor-senha>"
       E preencher o campo confirmar senha com o valor "<confirma-senha>"
-      E enviar a requisicao para cadastrar novo usuário
+      E enviar a requisicao para cadastrar novo usuario
       Entao devo receber o status <status-de-resposta>
       Exemplos:
         | valor-login | valor-senha | confirma-senha | status-de-resposta |
