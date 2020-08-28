@@ -8,6 +8,7 @@ public enum Funcionalidade {
         this.endereco = endereco;
     }
     public String endereco(){
-        return this.endereco;
+        //Adicione o endereço de sua aplicacao (exemplo -> https://minha-aplicacao.com.br)
+        return "{HOSTNAME}".concat(this.endereco);
     }
 }
