@@ -1,4 +1,4 @@
-# SeuVisu
+# MeuCabelereiro
 Ideia de aplicação para profissionais de estética
 
 # História do Salão da Claudia
