@@ -12,16 +12,16 @@
       E enviar a requisicao para cadastrar novo usuario
       Entao devo receber o status <status-de-resposta>
       Exemplos:
-        | valor-login | valor-senha | confirma-senha | status-de-resposta |
-        | flavio      | valor-senha | valor-senha    | 201                |
-        | flavio      | valor-senha | valor-senha    | 401                |
-        | valorlogin1 | valor-senha | valor-88888    | 400                |
-        |             | valor-senha | valor-senha    | 400                |
-        | valorlogin1 |             | valor-senha    | 400                |
-        | valorlogin1 | valor-senha |                | 400                |
-        |             |             | valor-senha    | 400                |
-        |             |             |                | 400                |
-        | valorlogin1 | valor-senha | valor88        | 400                |
+        | valor-login    | valor-senha | confirma-senha | status-de-resposta |
+        | flaviodiminuto | valor-senha | valor-senha    | 201                |
+        | flaviodiminuto | valor-senha | valor-senha    | 401                |
+        | valorlogin1    | valor-senha | valor-88888    | 400                |
+        |                | valor-senha | valor-senha    | 400                |
+        | valorlogin1    |             | valor-senha    | 400                |
+        | valorlogin1    | valor-senha |                | 400                |
+        |                |             | valor-senha    | 400                |
+        |                |             |                | 400                |
+        | valorlogin1    | valor-senha | valor88        | 400                |
 
     Esquema do Cenario: Tentar atualizra um usuário existente
       Dado que eu preencha o campo login com o valor "<valor-login>"
@@ -30,14 +30,14 @@
       E submeta os dados para atualizar o usuario
       Entao devo receber o status <status-de-resposta>
       Exemplos:
-        | valor-login | senha-atual | nova-senha     | status-de-resposta |
-        | flavio      | valor-senha | valor-senha    | 400                |
-        | flavio      |             | valor-senha    | 400                |
-        | flavio      | valor-senha |                | 400                |
-        | flavio      |             |                | 400                |
-        | flavio      | valor-senha | valor88        | 400                |
-        | Michel      | valor-senha | valor-88888    | 400                |
-        | flavio      | valor-senha | valor-88888    | 200                |
+        | valor-login    | senha-atual | nova-senha     | status-de-resposta |
+        | flaviodiminuto | valor-senha | valor-senha    | 400                |
+        | flaviodiminuto |             | valor-senha    | 400                |
+        | flaviodiminuto | valor-senha |                | 400                |
+        | flaviodiminuto |             |                | 400                |
+        | flaviodiminuto | valor-senha | valor88        | 400                |
+        | Michel         | valor-senha | valor-senha    | 400                |
+        | flaviodiminuto | valor-senha | valor-88888    | 200                |
 
 
 
