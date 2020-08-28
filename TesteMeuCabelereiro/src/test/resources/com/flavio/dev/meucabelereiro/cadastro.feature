@@ -5,7 +5,7 @@
       Atualizar usuario
       Inativar usuario
 
-    Esquema do Cenário: Cadastrar novo usuário
+    Esquema do Cenário: Tentar cadastrar novo usuario
       Dado que eu preencha o campo login com o valor "<valor-login>"
       E preencha o campo senha com o valor "<valor-senha>"
       E preencher o campo confirmar senha com o valor "<confirma-senha>"
