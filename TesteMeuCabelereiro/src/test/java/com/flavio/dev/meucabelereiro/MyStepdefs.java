@@ -63,7 +63,7 @@ public class MyStepdefs {
     @E("submeta os dados para atualizar o usuario")
     public void submetaOsDadosParaAtualizarOUsuario() {
         this.resposta = RestAssured.given().
-                    params("login", this.login, "senha", this.senha, "confirma-senha",this.confirmaSenha).
+                    params("login", this.login, "senha-atual", this.senha, "nova-senha",this.novaSenha).
                 when().
                     put(Funcionalidade.USUARIO.endereco()).
                 then();
