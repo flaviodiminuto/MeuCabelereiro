@@ -1,5 +1,6 @@
 package com.flavio.dev.meucabelereiro;
 
+import com.flavio.dev.meucabelereiro.Util.SendRequestUtil;
 import com.flavio.dev.meucabelereiro.config.Funcionalidade;
 import io.cucumber.java.Before;
 import io.cucumber.java.pt.Dado;
@@ -15,7 +16,6 @@ public class MyStepdefs {
     private String novaSenha;
 
     private ValidatableResponse resposta;
-    private final String chaveTeste = String.valueOf(System.currentTimeMillis());
 
     @Before
     public void setup(){
@@ -28,7 +28,7 @@ public class MyStepdefs {
 
     @Dado("que eu preencha o campo login com o valor {string}")
     public void queEuPreenchaOCampoLoginComOValor(String login) {
-        this.login = login.concat(chaveTeste);
+        this.login = SendRequestUtil.unique(login);
     }
 
     @E("preencha o campo senha com o valor {string}")
