@@ -9,6 +9,6 @@ public enum Funcionalidade {
     }
     public String endereco(){
         //Adicione o endereço de sua aplicacao (exemplo -> https://minha-aplicacao.com.br)
-        return "{HOSTNAME}".concat(this.endereco);
+        return "http://localhost:8080".concat(this.endereco);
     }
 }
