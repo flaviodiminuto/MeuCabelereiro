@@ -9,7 +9,7 @@ import io.cucumber.java.pt.Entao;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 
-public class MyStepdefs {
+public class PassosDeUsuario {
     private String login;
     private String senha;
     private String confirmaSenha;
