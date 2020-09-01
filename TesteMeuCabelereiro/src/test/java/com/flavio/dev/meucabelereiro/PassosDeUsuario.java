@@ -43,7 +43,11 @@ public class PassosDeUsuario {
 
     @E("enviar a requisicao para cadastrar novo usuario")
     public void enviarARequisicaoParaCadastrarNovoUsuario() {
+        String methods = "GET,POST,PUT";
+        String headers = "X-Custom";
         this.resposta = RestAssured.given().
+                    header("Access-Control-Request-Method", methods).
+                    header("Access-Control-Request-Headers", headers).
                     params("login", this.login, "senha", this.senha, "confirma-senha",this.confirmaSenha).
                 when().
                     post(Funcionalidade.USUARIO.endereco()).
@@ -62,7 +66,11 @@ public class PassosDeUsuario {
 
     @E("submeta os dados para atualizar o usuario")
     public void submetaOsDadosParaAtualizarOUsuario() {
+        String methods = "GET,POST,PUT";
+        String headers = "X-Custom";
         this.resposta = RestAssured.given().
+                header("Access-Control-Request-Method", methods).
+                header("Access-Control-Request-Headers", headers).
                     params("login", this.login, "senha-atual", this.senha, "nova-senha",this.novaSenha).
                 when().
                     put(Funcionalidade.USUARIO.endereco()).

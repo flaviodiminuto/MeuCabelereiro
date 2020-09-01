@@ -11,4 +11,7 @@ public interface UsuarioRepository extends CrudRepository<UsuarioEntity, Long> {
     @Query("select u from UsuarioEntity u where u.login = ?1")
     UsuarioEntity findByLogin(String login);
 
+    @Query("select u from UsuarioEntity u where u.login = ?1 and u.senha = ?2")
+    UsuarioEntity findByLoginAndSenha(String login, String senha);
+
 }
