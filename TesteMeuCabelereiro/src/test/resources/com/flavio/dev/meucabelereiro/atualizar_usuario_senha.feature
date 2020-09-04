@@ -14,8 +14,8 @@
 
     @meu_cabelereiro
     @atualizar_usuario
-    @atualizar_nova_senha_igual_antiga_senha
-    Cenario: Tentar atualizar senha igual a senha antiga
+    @atualizar_nova_senha_igual_a_senha_antiga
+    Cenario: Tentar atualizar senha atual igual a senha antiga
       Dado que eu preencha o campo login com o valor "flaviodiminuto123"
       E preencha o campo senha com o valor "valorsenha123"
       E preencha o campo nova senha com o valor "valorsenha123"
@@ -26,38 +26,38 @@
     @atualizar_usuario
     @atualizar_senha_atual_em_branco
     Cenario: Tentar atualizar com a senha atual em branco
-      Dado que eu preencha o campo login com o valor "flavio.diminuto"
+      Dado que eu preencha o campo login com o valor "flaviodiminuto123"
       E preencha o campo senha com o valor ""
       E preencha o campo nova senha com o valor "valor-senha"
       E submeta os dados para atualizar o usuario
-      Entao devo receber o status 400
+      Entao devo receber o status 401
 
     @meu_cabelereiro
     @atualizar_usuario
     @atualizar_nova_senha_em_branco
     Cenario: Tentar atualizar com a nova senha em branco
-      Dado que eu preencha o campo login com o valor "flavio.diminuto"
-      E preencha o campo senha com o valor "valor-senha"
+      Dado que eu preencha o campo login com o valor "flaviodiminuto123"
+      E preencha o campo senha com o valor "valorsenha123"
       E preencha o campo nova senha com o valor ""
       E submeta os dados para atualizar o usuario
       Entao devo receber o status 400
 
     @meu_cabelereiro
     @atualizar_usuario
-    @atualizar_nova_senha_e_comfirma_senha_em_branco
-    Cenario: Tentar atualizar com a senha e a  nova senha em branco
-      Dado que eu preencha o campo login com o valor "flavio.diminuto"
+    @atualizar_nova_senha_e_nova_senha_em_branco
+    Cenario: Tentar atualizar com a senha atual e a  nova senha em branco
+      Dado que eu preencha o campo login com o valor "flaviodiminuto123"
       E preencha o campo senha com o valor ""
       E preencha o campo nova senha com o valor ""
       E submeta os dados para atualizar o usuario
-      Entao devo receber o status 400
+      Entao devo receber o status 401
 
     @meu_cabelereiro
     @atualizar_usuario
     @atualizar_nova_senha_com_menos_de_oito_caracteres
     Cenario: Tentar atualizar com a nova senha com menos de oito caracteres
-      Dado que eu preencha o campo login com o valor "flavio.diminuto"
-      E preencha o campo senha com o valor "valor-senha"
+      Dado que eu preencha o campo login com o valor "flaviodiminuto123"
+      E preencha o campo senha com o valor "valorsenha123"
       E preencha o campo nova senha com o valor "valor88"
       E submeta os dados para atualizar o usuario
       Entao devo receber o status 400
@@ -67,7 +67,7 @@
     @atualizar_usuario_nao_cadastrado
     Cenario: Tentar atualizar senha de usuario nao cadastrado
       Dado que eu preencha o campo login com o valor "michel"
-      E preencha o campo senha com o valor "valor-senha"
+      E preencha o campo senha com o valor "valorsenha123"
       E preencha o campo nova senha com o valor "valor-senha-nova"
       E submeta os dados para atualizar o usuario
       Entao devo receber o status 401
@@ -77,10 +77,10 @@
     @atualizar_usuario_em_branco
     Cenario: Tentar atualizar senha de usuario em branco
       Dado que eu preencha o campo login com o valor ""
-      E preencha o campo senha com o valor "valor-senha"
+      E preencha o campo senha com o valor "valorsenha123"
       E preencha o campo nova senha com o valor "valor-senha"
       E submeta os dados para atualizar o usuario
-      Entao devo receber o status 400
+      Entao devo receber o status 401
 
     @meu_cabelereiro
     @atualizar_usuario
