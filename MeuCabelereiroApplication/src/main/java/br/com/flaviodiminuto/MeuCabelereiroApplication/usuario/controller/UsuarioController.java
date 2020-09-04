@@ -1,6 +1,10 @@
 package br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.controller;
 
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.entity.UsuarioEntity;
+import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.mapper.UsuarioMapper;
+import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.persistence.UsuarioRepository;
+import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.record.RespostaUsuario;
+import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.record.Usuario;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.SalvarUsuario;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.UsuarioAtualizarUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +19,12 @@ public class UsuarioController {
 
     @Autowired
     SalvarUsuario save;
+
     @Autowired
-    UsuarioAtualizarUseCase update;
+    UsuarioRepository repository;
+
+    UsuarioAtualizarUseCase update = new UsuarioAtualizarUseCase();
+    UsuarioMapper mapper = new UsuarioMapper();
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<String> cadastrar(@RequestParam(name = "login") String login,
@@ -48,8 +56,31 @@ public class UsuarioController {
     public ResponseEntity<String> atualizar(@RequestParam String login,
                                             @RequestParam(name = "senha-atual") String senhaAtual,
                                             @RequestParam(name = "nova-senha") String novaSenha ){
-        var result = update.execute(login,senhaAtual,novaSenha);
-        return ResponseEntity.status(result.status() ).body(result.mensagem());
+        RespostaUsuario<String> result;
+        try{
+            var usuarioPersistido = repository.findByLoginAndSenha(login,senhaAtual);
+            var usuarioAtual = mapper.toRecord(usuarioPersistido);
+            var usuarioAtualizado = new Usuario(usuarioAtual.id(), usuarioAtual.login(),novaSenha);
+            result = update.execute(usuarioAtual,usuarioAtualizado);
+            if(result.status().equals(200))
+                result = salvarUsuario(mapper.toEntity(usuarioAtualizado));
+        }catch (Exception e){
+            result = respostaDeErro();
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(result.status() ).body(result.entity());
+    }
 
+    private RespostaUsuario<String> salvarUsuario(UsuarioEntity usuario){
+        try{
+            repository.save(usuario);
+            return new RespostaUsuario<>("Operacao realizada com sucesso", 200);
+        }catch (Exception e){
+            return respostaDeErro();
+        }
+    }
+
+    private RespostaUsuario<String> respostaDeErro(){
+        return new RespostaUsuario<>("Ocorreu uma Falha inesperada",500);
     }
 }
