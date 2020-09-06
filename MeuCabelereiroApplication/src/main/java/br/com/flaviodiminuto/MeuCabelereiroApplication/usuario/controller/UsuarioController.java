@@ -7,11 +7,15 @@ import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.record.RespostaUs
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.record.Usuario;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.SalvarUsuario;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.UsuarioAtualizarUseCase;
+import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.ValidadorUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/usuarios", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -37,6 +41,8 @@ public class UsuarioController {
             && senha != null && !senha.isEmpty()
             && senha.equals(confirmaSenha)) {
                 var usuario = new UsuarioEntity(null, login,senha);
+                if(!ValidadorUsuario.validaSenha(usuario.getSenha()))
+                    return ResponseEntity.status(400).body("Senha invalida");
                 if(save.salvar(usuario)) {
                     status = HttpStatus.CREATED;
                     mensagem = "usuario cadastrado com sucesso";
