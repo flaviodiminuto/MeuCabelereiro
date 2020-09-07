@@ -5,11 +5,9 @@ import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.mapper.UsuarioMap
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.persistence.UsuarioRepository;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.record.RespostaUsuario;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.record.Usuario;
-import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.SalvarUsuario;
+import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.CadastrarUsuario;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.UsuarioAtualizarUseCase;
-import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.ValidadorUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsuarioController {
 
     @Autowired
-    SalvarUsuario save;
+    CadastrarUsuario save;
 
     @Autowired
     UsuarioRepository repository;
@@ -34,28 +32,22 @@ public class UsuarioController {
     public ResponseEntity<String> cadastrar(@RequestParam(name = "login") String login,
                                               @RequestParam(name = "senha") String senha,
                                               @RequestParam(name = "confirma-senha") String confirmaSenha ){
-        var status = HttpStatus.BAD_REQUEST;
-        var mensagem = "campo invalido";
+        RespostaUsuario<String> resposta = respostaDeErro();
+
         try{
-            if(login != null && !login.isEmpty()
-            && senha != null && !senha.isEmpty()
-            && senha.equals(confirmaSenha)) {
-                var usuario = new UsuarioEntity(null, login,senha);
-                if(!ValidadorUsuario.validaSenha(usuario.getSenha()))
-                    return ResponseEntity.status(400).body("Senha invalida");
-                if(save.salvar(usuario)) {
-                    status = HttpStatus.CREATED;
-                    mensagem = "usuario cadastrado com sucesso";
-                }else{
-                    status = HttpStatus.UNAUTHORIZED;
-                    mensagem = "Login já utilizado";
-                }
+            var usuario = repository.findByLoginAndSenha(login, senha);
+            var id = usuario != null ? usuario.getId() : null;
+            resposta = save.execute(id, senha,confirmaSenha);
+
+            if(resposta.status().equals(200)){
+                var newUsuario = new UsuarioEntity(null, login, senha);
+                repository.save(newUsuario);
+                resposta = new RespostaUsuario<>("Usuário cadastrado com sucesso", 201);
             }
         }catch (Exception e){
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-            mensagem = "Ocorreu uma falha inesperada";
+            e.printStackTrace();
         }
-        return ResponseEntity.status(status).body(mensagem);
+        return ResponseEntity.status(resposta.status()).body(resposta.entity());
     }
 
     @RequestMapping(method = RequestMethod.PUT)
@@ -68,22 +60,15 @@ public class UsuarioController {
             var usuarioAtual = mapper.toRecord(usuarioPersistido);
             var usuarioAtualizado = new Usuario(usuarioAtual.id(), usuarioAtual.login(),novaSenha);
             result = update.execute(usuarioAtual,usuarioAtualizado);
-            if(result.status().equals(200))
-                result = salvarUsuario(mapper.toEntity(usuarioAtualizado));
+            if(result.status().equals(200)) {
+                repository.save(mapper.toEntity(usuarioAtualizado));
+                result = new RespostaUsuario<>("Atualização realizada com sucesso", 200);
+            }
         }catch (Exception e){
             result = respostaDeErro();
             e.printStackTrace();
         }
         return ResponseEntity.status(result.status() ).body(result.entity());
-    }
-
-    private RespostaUsuario<String> salvarUsuario(UsuarioEntity usuario){
-        try{
-            repository.save(usuario);
-            return new RespostaUsuario<>("Operacao realizada com sucesso", 200);
-        }catch (Exception e){
-            return respostaDeErro();
-        }
     }
 
     private RespostaUsuario<String> respostaDeErro(){

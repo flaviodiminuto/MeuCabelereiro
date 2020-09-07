@@ -16,7 +16,7 @@
     @cadastrar_usuario
     @cadastrar_usuario_usuario_existente
     Cenario: Tentar cadastrar usuário já existente
-      Dado que eu preencha o campo login com o valor "flaviodiminuto"
+      Dado que eu preencha o campo login com o valor "flaviodiminutocad"
       E preencha o campo senha com o valor "valor-senha"
       E preencher o campo confirmar senha com o valor "valor-senha"
       E enviar a requisicao para cadastrar novo usuario
