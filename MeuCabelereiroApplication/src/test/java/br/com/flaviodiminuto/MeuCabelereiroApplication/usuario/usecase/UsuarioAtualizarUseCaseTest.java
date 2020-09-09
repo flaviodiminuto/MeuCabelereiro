@@ -1,6 +1,6 @@
 package br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase;
 
-import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.record.RespostaUsuario;
+import br.com.flaviodiminuto.MeuCabelereiroApplication.util.RespostaGenerica;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.record.Usuario;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,32 +17,13 @@ public class UsuarioAtualizarUseCaseTest {
     }
 
     @Test
-    @DisplayName("Nova senha válida")
-    public void senhaValida(){
-        assertTrue(usecase.validaSenha("novasenha"));
-    }
-
-    @Test
-    @DisplayName("Nova senha contém menos de oito caracteres - \uD83D\uDE31")
-    public void senhaComMenosDeOitoCaracteres(){
-        assertFalse(usecase.validaSenha("nova"));
-    }
-
-    @Test
-    @DisplayName("Nova senha vazia - \uD83D\uDE31")
-    public void novaSenhaVazia(){
-        assertFalse(usecase.validaSenha(""));
-    }
-
-
-    @Test
     @DisplayName("Senha nova igual a senha antiga - \uD83D\uDE31")
     public void senhaNovaIgualSenhaAntiga(){
         var usuarioAtual = new Usuario(1L,"login1234",  "senhaAntiga");
         var usuarioAtualizado = new Usuario(1L,"login1234",  "senhaAntiga" );
-        RespostaUsuario<String> resposta = usecase.execute(usuarioAtual,usuarioAtualizado);
+        RespostaGenerica<String> respostaGenerica = usecase.execute(usuarioAtual,usuarioAtualizado);
 
-        assertEquals(304, resposta.status());
+        assertEquals(304, respostaGenerica.status());
     }
 
     @Test
@@ -52,10 +33,10 @@ public class UsuarioAtualizarUseCaseTest {
         var usuarioAtual = new Usuario(1L,"login1234",  "senhavalida");
         var usuarioAtualizado = new Usuario(1L,"login1234",  "novasenha");
 
-        //Execao do teste
-        RespostaUsuario<String> resposta = usecase.execute(usuarioAtual,usuarioAtualizado);
+        //Execucao da operacao
+        RespostaGenerica<String> respostaGenerica = usecase.execute(usuarioAtual,usuarioAtualizado);
 
         //Verificacao do resultado
-        assertEquals(200, resposta.status());
+        assertEquals(200, respostaGenerica.status());
     }
 }
