@@ -1,6 +1,6 @@
 package br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase;
 
-import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.record.RespostaUsuario;
+import br.com.flaviodiminuto.MeuCabelereiroApplication.util.RespostaGenerica;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.record.Usuario;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,9 +21,9 @@ public class UsuarioAtualizarUseCaseTest {
     public void senhaNovaIgualSenhaAntiga(){
         var usuarioAtual = new Usuario(1L,"login1234",  "senhaAntiga");
         var usuarioAtualizado = new Usuario(1L,"login1234",  "senhaAntiga" );
-        RespostaUsuario<String> resposta = usecase.execute(usuarioAtual,usuarioAtualizado);
+        RespostaGenerica<String> respostaGenerica = usecase.execute(usuarioAtual,usuarioAtualizado);
 
-        assertEquals(304, resposta.status());
+        assertEquals(304, respostaGenerica.status());
     }
 
     @Test
@@ -34,9 +34,9 @@ public class UsuarioAtualizarUseCaseTest {
         var usuarioAtualizado = new Usuario(1L,"login1234",  "novasenha");
 
         //Execucao da operacao
-        RespostaUsuario<String> resposta = usecase.execute(usuarioAtual,usuarioAtualizado);
+        RespostaGenerica<String> respostaGenerica = usecase.execute(usuarioAtual,usuarioAtualizado);
 
         //Verificacao do resultado
-        assertEquals(200, resposta.status());
+        assertEquals(200, respostaGenerica.status());
     }
 }
