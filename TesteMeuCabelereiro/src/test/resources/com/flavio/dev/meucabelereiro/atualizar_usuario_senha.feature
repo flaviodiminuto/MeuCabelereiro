@@ -30,7 +30,7 @@
       E preencha o campo senha com o valor ""
       E preencha o campo nova senha com o valor "valor-senha"
       E submeta os dados para atualizar o usuario
-      Entao devo receber o status 401
+      Entao devo receber o status 403
 
     @meu_cabelereiro
     @atualizar_usuario
@@ -50,7 +50,7 @@
       E preencha o campo senha com o valor ""
       E preencha o campo nova senha com o valor ""
       E submeta os dados para atualizar o usuario
-      Entao devo receber o status 401
+      Entao devo receber o status 403
 
     @meu_cabelereiro
     @atualizar_usuario
@@ -70,7 +70,7 @@
       E preencha o campo senha com o valor "valorsenha123"
       E preencha o campo nova senha com o valor "valor-senha-nova"
       E submeta os dados para atualizar o usuario
-      Entao devo receber o status 401
+      Entao devo receber o status 403
 
     @meu_cabelereiro
     @atualizar_usuario
@@ -80,7 +80,7 @@
       E preencha o campo senha com o valor "valorsenha123"
       E preencha o campo nova senha com o valor "valor-senha"
       E submeta os dados para atualizar o usuario
-      Entao devo receber o status 401
+      Entao devo receber o status 403
 
     @meu_cabelereiro
     @atualizar_usuario
