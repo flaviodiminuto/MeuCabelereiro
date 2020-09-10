@@ -1,4 +1,6 @@
 package br.com.flaviodiminuto.MeuCabelereiroApplication.util;
 
-public record RespostaGenerica<S>(S entity, Integer status) {
+import javax.ws.rs.core.Response.Status;
+
+public record RespostaGenerica<S>(S entity, Status status) {
 }
