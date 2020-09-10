@@ -1,76 +1,53 @@
 package br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.controller;
 
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.entity.UsuarioEntity;
-import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.mapper.UsuarioMapper;
-import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.persistence.UsuarioRepository;
-import br.com.flaviodiminuto.MeuCabelereiroApplication.util.RespostaGenerica;
-import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.record.Usuario;
+import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.UsuarioAtualizar;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.UsuarioCadastrar;
-import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.UsuarioAtualizarUseCase;
+import br.com.flaviodiminuto.MeuCabelereiroApplication.util.RespostaGenerica;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.ws.rs.core.Response.Status;
+
 @RestController
-@RequestMapping(value = "/usuarios", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("usuarios")
 public class UsuarioController {
 
-
     @Autowired
-    UsuarioRepository repository;
+    UsuarioAtualizar atualizar;
+    @Autowired
+    UsuarioCadastrar cadastrar;
 
-    UsuarioAtualizarUseCase update = new UsuarioAtualizarUseCase();
-    UsuarioCadastrar save = new UsuarioCadastrar();
-    UsuarioMapper mapper = new UsuarioMapper();
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> cadastrar(@RequestParam(name = "login") String login,
+    public ResponseEntity<UsuarioEntity> cadastrar(@RequestParam(name = "login") String login,
                                               @RequestParam(name = "senha") String senha,
                                               @RequestParam(name = "confirma-senha") String confirmaSenha ){
-        RespostaGenerica<String> respostaGenerica = respostaDeErro();
-
+        RespostaGenerica<UsuarioEntity> result = new RespostaGenerica<>(new UsuarioEntity(null,login,senha), Status.INTERNAL_SERVER_ERROR);
         try{
-            var usuario = repository.findByLoginAndSenha(login, senha);
-            var id = usuario != null ? usuario.getId() : null;
-            respostaGenerica = save.execute(id, senha,confirmaSenha);
-
-            if(respostaGenerica.status().equals(200)){
-                var newUsuario = new UsuarioEntity(null, login, senha);
-                repository.save(newUsuario);
-                respostaGenerica = new RespostaGenerica<>("Usuário cadastrado com sucesso", 201);
-            }
+            result = cadastrar.execute(login, senha,confirmaSenha);
         }catch (Exception e){
             e.printStackTrace();
         }
-        return ResponseEntity.status(respostaGenerica.status()).body(respostaGenerica.entity());
+        return ResponseEntity.status(result.status().getStatusCode()).body(result.entity());
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<String> atualizar(@RequestParam String login,
-                                            @RequestParam(name = "senha-atual") String senhaAtual,
-                                            @RequestParam(name = "nova-senha") String novaSenha ){
-        RespostaGenerica<String> result;
+    public ResponseEntity<UsuarioEntity> atualizar(@RequestParam String login,
+                              @RequestParam(name = "senha-atual") String senhaAtual,
+                              @RequestParam(name = "nova-senha") String novaSenha ){
+        var usuarioAtual = new UsuarioEntity(null, login,senhaAtual);
+        var usuarioAtualizado = new UsuarioEntity(null,login,novaSenha);
+        RespostaGenerica<UsuarioEntity> result = new RespostaGenerica<>(usuarioAtualizado, Status.INTERNAL_SERVER_ERROR);
         try{
-            var usuarioPersistido = repository.findByLoginAndSenha(login,senhaAtual);
-            var usuarioAtual = mapper.toRecord(usuarioPersistido);
-            var usuarioAtualizado = new Usuario(usuarioAtual.id(), usuarioAtual.login(),novaSenha);
-            result = update.execute(usuarioAtual,usuarioAtualizado);
-            if(result.status().equals(200)) {
-                repository.save(mapper.toEntity(usuarioAtualizado));
-                result = new RespostaGenerica<>("Atualização realizada com sucesso", 200);
-            }
+            result = atualizar.execute(usuarioAtual,usuarioAtualizado);
         }catch (Exception e){
-            result = respostaDeErro();
             e.printStackTrace();
         }
-        return ResponseEntity.status(result.status() ).body(result.entity());
-    }
-
-    private RespostaGenerica<String> respostaDeErro(){
-        return new RespostaGenerica<>("Ocorreu uma Falha inesperada",500);
+        return ResponseEntity.status(result.status().getStatusCode()).body(result.entity());
     }
 }

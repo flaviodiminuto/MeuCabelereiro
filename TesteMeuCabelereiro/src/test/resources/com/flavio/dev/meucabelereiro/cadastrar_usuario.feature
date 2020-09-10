@@ -22,7 +22,7 @@
       E enviar a requisicao para cadastrar novo usuario
       #Preencher novamente os mesmos dados
       E enviar a requisicao para cadastrar novo usuario
-      Entao devo receber o status 401
+      Entao devo receber o status 403
 
     @meu_cabelereiro
     @cadastrar_usuario

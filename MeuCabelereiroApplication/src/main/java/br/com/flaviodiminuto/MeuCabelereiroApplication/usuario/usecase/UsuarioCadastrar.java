@@ -1,17 +1,28 @@
 package br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase;
 
+import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.entity.UsuarioEntity;
+import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.persistence.UsuarioRepository;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.util.RespostaGenerica;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.ws.rs.core.Response.Status;
+
+@Component
 public class UsuarioCadastrar {
 
-    public RespostaGenerica<String> execute(Long id, String senha, String confirmaSenha){
+    @Autowired
+    UsuarioRepository repository;
 
-        if(id != null) return new RespostaGenerica<>("Usuário já cadastrado", 401);
+    public RespostaGenerica<UsuarioEntity> execute(String login, String senha, String confirmaSenha){
+        var usuarioPersistido = repository.findByLoginAndSenha(login,senha);
+        var novoUsuario =  new UsuarioEntity(null,login,senha);
 
-        if(!ValidadorUsuario.validaSenha(senha)) return new RespostaGenerica<>("Senha inválida", 400);
+        if (usuarioPersistido != null) return new RespostaGenerica<>(novoUsuario, Status.FORBIDDEN);
 
-        if(!senha.equals(confirmaSenha)) return new RespostaGenerica<>("Confirmacao de senha diferente da senha", 400);
+        if(!ValidadorUsuario.validaSenha(senha) || !senha.equals(confirmaSenha)) return new RespostaGenerica<>(novoUsuario, Status.BAD_REQUEST);
 
-        return new RespostaGenerica<>("", 200);
+        repository.save(novoUsuario);
+        return new RespostaGenerica<>(novoUsuario, Status.CREATED);
     }
 }
