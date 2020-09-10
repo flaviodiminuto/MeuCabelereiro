@@ -18,7 +18,7 @@
  	Senha nova diferente da atual e
  	Senha nova com no mínimo 8 caracteres
 ### status 304 - Not Modified
-    Senha atual iaugl a senha antiga
+    Senha atual igual a senha antiga
 ### Status 400 - Bad Request
  	Nova senha em branco
  	Nova senha com menos de 8 Caracteres
