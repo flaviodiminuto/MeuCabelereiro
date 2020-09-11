@@ -1,9 +1,7 @@
 package br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.usuario;
 
-import br.com.flaviodiminuto.MeuCabelereiroApplication.endereco.persistence.EnderecoRepository;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.dto.Usuario;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.entity.UsuarioEntity;
-import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.persistence.UsuarioRepository;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.RepositoriosMockados;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.UsuarioAtualizar;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.util.RespostaGenerica;
@@ -12,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.ws.rs.core.Response.Status;
@@ -37,8 +34,8 @@ public class UsuarioAtualizarTest extends RepositoriosMockados {
         var usuario = new Usuario();
         usuario.login = "loginvalido";
         usuario.senha = String.valueOf(System.currentTimeMillis());
-        given(repository.findByLogin(usuario.login)).willReturn(usuarioEntity);
-        given(repository.save(usuarioEntity)).willReturn(usuarioEntity);
+        given(usuarioRepository.findByLogin(usuario.login)).willReturn(usuarioEntity);
+        given(usuarioRepository.save(usuarioEntity)).willReturn(usuarioEntity);
 
         //Execucao da operacao
         RespostaGenerica<UsuarioEntity> respostaGenerica = usecase.execute(usuario);
@@ -54,7 +51,7 @@ public class UsuarioAtualizarTest extends RepositoriosMockados {
         var usuario = new Usuario();
         usuario.login =  usuarioEntity.getLogin();
         usuario.senha = usuarioEntity.getSenha();
-        given(repository.findByLogin(usuario.login)).willReturn(usuarioEntity);
+        given(usuarioRepository.findByLogin(usuario.login)).willReturn(usuarioEntity);
 
         RespostaGenerica<UsuarioEntity> respostaGenerica = usecase.execute(usuario);
 
@@ -69,7 +66,7 @@ public class UsuarioAtualizarTest extends RepositoriosMockados {
         var usuario = new Usuario();
         usuario.login =  usuarioEntity.getLogin();
         usuario.senha = usuarioEntity.getSenha();
-        given(repository.findByLogin(usuario.login)).willThrow(new Exception("Teste do fluxo de execao da atualizacao de usuario"));
+        given(usuarioRepository.findByLogin(usuario.login)).willThrow(new Exception("Teste do fluxo de execao da atualizacao de usuario"));
 
         RespostaGenerica<UsuarioEntity> respostaGenerica = usecase.execute(usuario);
 
