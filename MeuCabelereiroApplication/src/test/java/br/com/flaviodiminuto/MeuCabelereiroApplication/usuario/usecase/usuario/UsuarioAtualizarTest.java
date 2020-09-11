@@ -1,8 +1,10 @@
-package br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase;
+package br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.usuario;
 
 import br.com.flaviodiminuto.MeuCabelereiroApplication.endereco.persistence.EnderecoRepository;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.entity.UsuarioEntity;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.persistence.UsuarioRepository;
+import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.RepositoriosMockados;
+import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.UsuarioAtualizar;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.util.RespostaGenerica;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +22,7 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @DisplayName("Teste do Use Case de atualização de usuário")
-public class UsuarioAtualizarTest extends RepositoriosMockados{
+public class UsuarioAtualizarTest extends RepositoriosMockados {
 
     @Autowired
     UsuarioAtualizar usecase;

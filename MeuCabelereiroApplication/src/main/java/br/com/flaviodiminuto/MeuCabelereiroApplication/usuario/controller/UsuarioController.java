@@ -1,15 +1,16 @@
 package br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.controller;
 
+import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.dto.Usuario;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.entity.UsuarioEntity;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.UsuarioAtualizar;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.UsuarioCadastrar;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.util.RespostaGenerica;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response.Status;
 
@@ -22,17 +23,12 @@ public class UsuarioController {
     @Autowired
     UsuarioCadastrar cadastrar;
 
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<UsuarioEntity> cadastrar(@RequestParam(name = "login") String login,
-                                              @RequestParam(name = "senha") String senha,
-                                              @RequestParam(name = "confirma-senha") String confirmaSenha ){
-        RespostaGenerica<UsuarioEntity> result = new RespostaGenerica<>(new UsuarioEntity(null,login,senha), Status.INTERNAL_SERVER_ERROR);
-        try{
-            result = cadastrar.execute(login, senha,confirmaSenha);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+    public ResponseEntity<UsuarioEntity> cadastrar(@RequestBody Usuario usuario){
+        RespostaGenerica<UsuarioEntity> result = cadastrar.execute(usuario);
+        logger.info(getMessage(result));
         return ResponseEntity.status(result.status().getStatusCode()).body(result.entity());
     }
 
@@ -42,12 +38,12 @@ public class UsuarioController {
                               @RequestParam(name = "nova-senha") String novaSenha ){
         var usuarioAtual = new UsuarioEntity(null, login,senhaAtual);
         var usuarioAtualizado = new UsuarioEntity(null,login,novaSenha);
-        RespostaGenerica<UsuarioEntity> result = new RespostaGenerica<>(usuarioAtualizado, Status.INTERNAL_SERVER_ERROR);
-        try{
-            result = atualizar.execute(usuarioAtual,usuarioAtualizado);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        RespostaGenerica<UsuarioEntity> result = atualizar.execute(usuarioAtual,usuarioAtualizado);
+        logger.info(getMessage(result));
         return ResponseEntity.status(result.status().getStatusCode()).body(result.entity());
+    }
+
+    private String getMessage(RespostaGenerica<UsuarioEntity> resposta){
+        return String.format("Operacao realizada com usuario %s resultou no status code %d", resposta.entity().getLogin(), resposta.status().getStatusCode());
     }
 }
