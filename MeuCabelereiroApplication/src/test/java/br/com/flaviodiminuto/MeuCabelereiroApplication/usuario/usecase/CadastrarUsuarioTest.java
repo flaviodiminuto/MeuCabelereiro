@@ -1,11 +1,8 @@
-package br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.usuario;
+package br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase;
 
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.dto.Usuario;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.entity.UsuarioEntity;
-import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.RepositoriosMockados;
-import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.UsuarioCadastrar;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.util.RespostaGenerica;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -64,7 +60,6 @@ public class CadastrarUsuarioTest extends RepositoriosMockados {
         Usuario usuario = new Usuario();
         usuario.login = login;
         usuario.senha = senha;
-        UsuarioEntity usuarioPersistido = new UsuarioEntity(null,login,senha);
         given(usuarioRepository.findByLoginAndSenha(login,senha)).willReturn(null);
 
         RespostaGenerica<UsuarioEntity> result = usecase.execute(usuario);

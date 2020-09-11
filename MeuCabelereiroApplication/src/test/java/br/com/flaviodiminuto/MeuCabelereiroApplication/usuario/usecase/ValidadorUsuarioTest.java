@@ -1,6 +1,5 @@
-package br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.usuario;
+package br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase;
 
-import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.ValidadorUsuario;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,13 +11,13 @@ public class ValidadorUsuarioTest {
     @Test
     @DisplayName("Senha válida")
     public void senhaValida(){
-        Assertions.assertTrue(ValidadorUsuario.validaAtributo("novasenha"));
+        Assertions.assertTrue(ValidadorUsuario.validaAtributo("nova1234"));
     }
 
     @Test
     @DisplayName("Senha contém menos de oito caracteres - \uD83D\uDE31")
     public void senhaComMenosDeOitoCaracteres(){
-        assertFalse(ValidadorUsuario.validaAtributo("nova"));
+        assertFalse(ValidadorUsuario.validaAtributo("nova123"));
     }
 
     @Test
@@ -30,6 +29,13 @@ public class ValidadorUsuarioTest {
     @Test
     @DisplayName("Senha igual a null - \uD83D\uDE31")
     public void senhaNula(){
+        assertFalse(ValidadorUsuario.validaAtributo(null));
+    }
+
+    @Test
+    @DisplayName("Aumentando cobertura de linahs - construcao da classe")
+    public void aumentoDeCobertura(){
+        ValidadorUsuario validadorUsuario = new ValidadorUsuario();
         assertFalse(ValidadorUsuario.validaAtributo(null));
     }
 }
