@@ -105,6 +105,32 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+<!--				DICA o suporte ao java 14 comeca na versao 1.5.1-->
+				<version>1.5.2</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-junit5-plugin</artifactId>
+						<version>0.8</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<jvmArgs>--enable-preview</jvmArgs>
+					<targetClasses>
+						<param>br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.ValidadorUsuario</param>
+						<param>br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.UsuarioCadastrar</param>
+						<param>br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.UsuarioAtualizar</param>
+					</targetClasses>
+					<targetTests>
+						<param>br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.ValidadorUsuarioTest</param>
+						<param>br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.CadastrarUsuarioTest</param>
+						<param>br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.UsuarioAtualizarTest</param>
+					</targetTests>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 

@@ -1,9 +1,7 @@
-package br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.usuario;
+package br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase;
 
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.dto.Usuario;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.entity.UsuarioEntity;
-import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.RepositoriosMockados;
-import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.UsuarioAtualizar;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.util.RespostaGenerica;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +13,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.ws.rs.core.Response.Status;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
