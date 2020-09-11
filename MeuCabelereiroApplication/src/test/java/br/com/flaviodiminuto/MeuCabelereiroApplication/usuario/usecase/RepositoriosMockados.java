@@ -7,7 +7,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public class RepositoriosMockados {
 
     @MockBean
-    public UsuarioRepository repository;
+    public UsuarioRepository usuarioRepository;
 
     @MockBean
     public EnderecoRepository enderecoRepository;
