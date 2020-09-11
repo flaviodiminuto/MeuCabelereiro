@@ -33,12 +33,8 @@ public class UsuarioController {
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<UsuarioEntity> atualizar(@RequestParam String login,
-                              @RequestParam(name = "senha-atual") String senhaAtual,
-                              @RequestParam(name = "nova-senha") String novaSenha ){
-        var usuarioAtual = new UsuarioEntity(null, login,senhaAtual);
-        var usuarioAtualizado = new UsuarioEntity(null,login,novaSenha);
-        RespostaGenerica<UsuarioEntity> result = atualizar.execute(usuarioAtual,usuarioAtualizado);
+    public ResponseEntity<UsuarioEntity> atualizar(@RequestBody Usuario usuario ){
+        RespostaGenerica<UsuarioEntity> result = atualizar.execute(usuario);
         logger.info(getMessage(result));
         return ResponseEntity.status(result.status().getStatusCode()).body(result.entity());
     }
