@@ -43,6 +43,33 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>3.5.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>2.28.2</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>2.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

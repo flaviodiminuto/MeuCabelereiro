@@ -1,6 +1,7 @@
 package br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.usuario;
 
 import br.com.flaviodiminuto.MeuCabelereiroApplication.endereco.persistence.EnderecoRepository;
+import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.dto.Usuario;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.entity.UsuarioEntity;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.persistence.UsuarioRepository;
 import br.com.flaviodiminuto.MeuCabelereiroApplication.usuario.usecase.RepositoriosMockados;
@@ -17,6 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.ws.rs.core.Response.Status;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
@@ -28,32 +30,50 @@ public class UsuarioAtualizarTest extends RepositoriosMockados {
     UsuarioAtualizar usecase;
 
     @Test
-    @DisplayName("Senha nova igual a senha antiga - \uD83D\uDE31")
-    public void senhaNovaIgualSenhaAntiga(){
+    @DisplayName("Atualização de usuario realizada com sucesso - 200")
+    public void atualizacaoFluxoOtimo() throws Exception {
         //Preparacao do teste
-        var usuarioAtual = new UsuarioEntity(1L,"login1234",  "senhaAntiga");
-        var usuarioAtualizado = new UsuarioEntity(1L,"login1234",  "senhaAntiga" );
-        given(repository.findByLoginAndSenha("login1234",  "senhaAntiga")).willReturn(usuarioAtual);
+        var usuarioEntity = new UsuarioEntity(1L,"login1234",  "senhavalida");
+        var usuario = new Usuario();
+        usuario.login = "loginvalido";
+        usuario.senha = String.valueOf(System.currentTimeMillis());
+        given(repository.findByLogin(usuario.login)).willReturn(usuarioEntity);
+        given(repository.save(usuarioEntity)).willReturn(usuarioEntity);
 
         //Execucao da operacao
-        RespostaGenerica<UsuarioEntity> respostaGenerica = usecase.execute(usuarioAtual,usuarioAtualizado);
+        RespostaGenerica<UsuarioEntity> respostaGenerica = usecase.execute(usuario);
+
+        //Verificacao do resultado
+        assertEquals(Status.OK, respostaGenerica.status());
+    }
+
+    @Test
+    @DisplayName("Tentar atualizar usuario com senha antiga e nova iguais - \uD83D\uDE31")
+    public void senhaSemAlteracao() throws Exception {
+        var usuarioEntity = new UsuarioEntity(1L,"login1234",  "senhaantiga");
+        var usuario = new Usuario();
+        usuario.login =  usuarioEntity.getLogin();
+        usuario.senha = usuarioEntity.getSenha();
+        given(repository.findByLogin(usuario.login)).willReturn(usuarioEntity);
+
+        RespostaGenerica<UsuarioEntity> respostaGenerica = usecase.execute(usuario);
 
         //Verificacao do resultado
         assertEquals(Status.NOT_MODIFIED, respostaGenerica.status());
     }
 
     @Test
-    @DisplayName("Atualização realizada com sucesso - 200")
-    public void atualizacaoFluxoOtimo(){
-        //Preparacao do teste
-        var usuarioAtual = new UsuarioEntity(1L,"login1234",  "senhavalida");
-        var usuarioAtualizado = new UsuarioEntity(1L,"login1234",  "novasenha");
-        given(repository.findByLoginAndSenha("login1234",  "senhavalida")).willReturn(usuarioAtual);
+    @DisplayName("Exception ao tentar atualizar usuario - \uD83D\uDE31")
+    public void atualizacaoComException() throws Exception {
+        var usuarioEntity = new UsuarioEntity(1L,"login1234",  "senhaantiga");
+        var usuario = new Usuario();
+        usuario.login =  usuarioEntity.getLogin();
+        usuario.senha = usuarioEntity.getSenha();
+        given(repository.findByLogin(usuario.login)).willThrow(new Exception("Teste do fluxo de execao da atualizacao de usuario"));
 
-        //Execucao da operacao
-        RespostaGenerica<UsuarioEntity> respostaGenerica = usecase.execute(usuarioAtual,usuarioAtualizado);
+        RespostaGenerica<UsuarioEntity> respostaGenerica = usecase.execute(usuario);
 
         //Verificacao do resultado
-        assertEquals(Status.OK, respostaGenerica.status());
+        assertEquals(Status.INTERNAL_SERVER_ERROR, respostaGenerica.status());
     }
 }

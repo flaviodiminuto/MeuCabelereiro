@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 public interface UsuarioRepository extends CrudRepository<UsuarioEntity, Long> {
 
     @Query("select u from UsuarioEntity u where u.login = ?1")
-    UsuarioEntity findByLogin(String login);
+    UsuarioEntity findByLogin(String login) throws Exception;
 
     @Query("select u from UsuarioEntity u where u.login = ?1 and u.senha = ?2")
-    UsuarioEntity findByLoginAndSenha(String login, String senha);
+    UsuarioEntity findByLoginAndSenha(String login, String senha) throws Exception;
 
 }
